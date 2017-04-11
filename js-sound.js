@@ -3,7 +3,7 @@
  * @author David Norminton
  * @link http://davenorm.me
  */
- 
+     
 var JsSound = function(selector, name, file, event){
     "use strict";
     // array of possible selectors for checking against user input
@@ -55,24 +55,36 @@ var JsSound = function(selector, name, file, event){
             type = this.getExt( file[i] );
             // if the browser supports the type add to this.fileExts array
             if ( this.isSupported( type ) ) {
+            
                 this.files.push( file[i] );
+
             }
             i += 1;
-        }
+       }
     // if the file parameter isn't an array it must be a string
     } else if ( typeof file === 'string' ) {
-      
+          
         // get the file extension
         type = this.getExt( file );
+
         // check it's supported by the browser
         if ( this.isSupported( type ) ) {
+
+            this.files.push( file );
 
         }
 
     }
     // find elements and add event listeners
-    (this.selector === 'id')? this.getElemById(this.selected)
-                            : this.getElemsByClass(this.selected);
+    if ( this.selector === 'id' ) {
+
+        this.getElemById(this.selected);
+
+    } else {
+
+        this.getElemsByClass(this.selected);
+
+    }    
 
 };
 
@@ -82,17 +94,18 @@ var JsSound = function(selector, name, file, event){
 JsSound.prototype.getElemById = function ( el ) {
     var element = document.getElementById(el);
     this.addEvent( element );
-}
+};
+
 /*
 @method getElemsByClass
 */
 JsSound.prototype.getElemsByClass = function ( el ) {
     var elements = document.getElementsByClassName( el );
-    var i = 0; l = elements.length;
+    var i = 0, l = elements.length;
     for ( ; i < l; i +=1 ) {
         this.addEvent( elements[i] );
     }
-}
+};
 
 /*
 @method addEvent - add event listener to single target 
@@ -107,15 +120,8 @@ JsSound.prototype.addEvent = function ( element ) {
         var audio = new Audio( file );
         audio.play();   
     });
-}
+};
 
-/*
-@method addSound - add sound to event
-*/
-JsSound.prototype.addSound = function (file) {
-    var audio = new Audio( file );
-    audio.play();
-}
 
 /*
 @method isSupported - does the browser support the file type
@@ -124,7 +130,7 @@ JsSound.prototype.addSound = function (file) {
 */
 JsSound.prototype.isSupported = function ( type ) {
     return this.support[type];
-}
+};
 
 /*
 @method - geExt - get the file extension
@@ -133,29 +139,29 @@ JsSound.prototype.isSupported = function ( type ) {
 */
 JsSound.prototype.getExt = function ( file ) {
     return file.substring(file.lastIndexOf(".")+1);
-}
+};
 
 // check for <audio> in MP3 format #
 JsSound.prototype.mp3Exists = function() {
     var a = document.createElement('audio');
     return !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
-}
+};
 
 // check for <audio> in Vorbis format #
 JsSound.prototype.oggExists = function() {
     var a = document.createElement('audio');
     return !!(a.canPlayType && a.canPlayType('audio/ogg; codecs="vorbis"').replace(/no/, ''));
-}
+};
 
 // check for <audio> in WAV format #
 JsSound.prototype.wavExists = function() {
     var a = document.createElement('audio');
     return !!(a.canPlayType && a.canPlayType('audio/wav; codecs="1"').replace(/no/, ''));
-}
+};
 
 // check for <audio> in AAC format #
 // Low-Complexity AAC audio in MP4 container
 JsSound.prototype.aacExists = function() {
     var a = document.createElement('audio');
     return !!(a.canPlayType && a.canPlayType('audio/mp4; codecs="mp4a.40.2"').replace(/no/, ''));
-}
+};

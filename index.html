@@ -1,12 +1,73 @@
 <!doctype html>
 <html>
 <head>
+    <title>JsSound</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a id="click" href="#">Click me</a>
+    <div class="header">
+        <div class="wrapper">
+            <h1>JsSound</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="wrapper">    
+            <p>
+            A basic default example with a click event.
+            </p>     
+            <div id="click" href="#">Click me for sound</div>
+            <code class="block">
+             var sound0 = new JsSound('id', 'click', ['sound/crash1.wav', 'sound/crash1.mp3']);           
+            </code>
+        </div>
+    </div> 
+    <div class="row2">
+        <div class="wrapper">    
+            <p>
+            An example using multiple targets with the same class.
+            </p>   
+            <span class="clank">Sound on class - click me</span>
+            <span class="clank">Sound on class - click me</span>
+            <span class="clank">Sound on class - click me</span>
+            <code class="block">
+             var sound1 = new JsSound('class', 'clank', ['sound/clank.wav', 'sound/clank.mp3']);            
+            </code>
+        </div>
+    </div>
+    <div class="row">
+        <div class="wrapper">  
+            <p>
+            An example using the optional fourth parameter, which specifies what type
+            of event to listen for, rather than the default click action.
+            </p>              
+            <div id="box">
+            <span>On mouseover and mouseout produce different sounds<span>
+            </div>
+            <code class="block">
+            var sound2 = new JsSound('id', 'box', ['sound/crash1.wav', 'sound/crash.mp3'], 'mouseover');<br />
+            var sound3 = new JsSound('id', 'box', ['sound/clank.wav', 'sound/clank.mp3'], 'mouseout');           
+            </code>
+    </div>
+    <div class="row2">
+        <div class="wrapper">    
+            <p>
+            JsSound on the third parameter accepts either an array of files to use ( each
+            of these should be of the same sound but different formats, in order to provide
+            a wider range of browser matches). This example shows a string being used.
+            </p>
+            <div id="single">Single sound</div>
+            <code class="block">
+            var sound4 = new JsSound('id', 'single', ['sound/clank.wav', 'sound/clank.mp3']);           
+            </code>
+        </div>
+    </div>    
 </body>
 <script src="js-sound.js"></script>
 <script>
-var sound = new JsSound('id', 'click', ['sound/crash1.wav', 'sound/crash1.mp3', 'sound/crash1.mp3']);
+var sound0 = new JsSound('id', 'click', ['sound/crash1.wav', 'sound/crash1.mp3']);
+var sound1 = new JsSound('class', 'clank', ['sound/clank.wav', 'sound/clank.mp3']);
+var sound2 = new JsSound('id', 'box', ['sound/crash1.wav', 'sound/crash.mp3'], 'mouseover');
+var sound3 = new JsSound('id', 'box', ['sound/clank.wav', 'sound/clank.mp3'], 'mouseout');
+var sound4 = new JsSound('id', 'single', ['sound/clank.wav', 'sound/clank.mp3']);
 </script>
 </html>
