@@ -4,27 +4,30 @@
  * @link http://davenorm.me
  */
  
-var JsSound = function(selector, id, file){
+var JsSound = function(selector, name, file, event){
     "use strict";
+    // array of possible selectors for checking against user input
     this.selectors = ['class', 'id'];
-
+    // name of the class or id to add event listeners to
+    this.selected = name;
+    // set default event type for eventListener
+    if ( event ) {
+        this.event = event;
+    } else {
+        this.event = 'click';
+    }    
+    // check the selector is valid
     if ( this.selectors.indexOf(selector) ) {
 
         this.selector = selector;
 
-    } else {
-
-        this.debug('selector', selector);
-
     }
-
-    this.id = id;
-
+    this.that = this;
     // check browser support for sound file types
     // each property contains a bool
     this.support = {
 
-        // bool support for mp3
+        // bool support for mp3# 
         mp3 : this.mp3Exists(),
         // bool support for wav
         wav : this.wavExists(),
@@ -32,10 +35,11 @@ var JsSound = function(selector, id, file){
         ogg : this.oggExists(),
         // bool support for aac
         aac : this.aacExists()
+
     };
 
     // array of sound file types supported by the browser
-    this.fileExts = [];
+    this.files = [];
 
     var l = file.length, i = 0, type;
 
@@ -51,33 +55,67 @@ var JsSound = function(selector, id, file){
             type = this.getExt( file[i] );
             // if the browser supports the type add to this.fileExts array
             if ( this.isSupported( type ) ) {
-                this.fileExts.push( type );
+                this.files.push( file[i] );
             }
             i += 1;
         }
-
-    } else {
-
-        if ( typeof file === 'string' ) {
-
-            type = this.getExt( file );
-
-            if ( this.isSupported( type ) ) {
-                this.fileExts.push( type );
-            }
+    // if the file parameter isn't an array it must be a string
+    } else if ( typeof file === 'string' ) {
+      
+        // get the file extension
+        type = this.getExt( file );
+        // check it's supported by the browser
+        if ( this.isSupported( type ) ) {
 
         }
+
     }
+    // find elements and add event listeners
+    (this.selector === 'id')? this.getElemById(this.selected)
+                            : this.getElemsByClass(this.selected);
 
-    
-    var click = document.getElementById(id);
-
-    click.addEventListener('click', function(){
-        // play file
-        var audio = new Audio(file[0]);
-        audio.play();
-    });
 };
+
+/*
+@method getElemByid
+*/
+JsSound.prototype.getElemById = function ( el ) {
+    var element = document.getElementById(el);
+    this.addEvent( element );
+}
+/*
+@method getElemsByClass
+*/
+JsSound.prototype.getElemsByClass = function ( el ) {
+    var elements = document.getElementsByClassName( el );
+    var i = 0; l = elements.length;
+    for ( ; i < l; i +=1 ) {
+        this.addEvent( elements[i] );
+    }
+}
+
+/*
+@method addEvent - add event listener to single target 
+@param string element - the element to add event listener to
+*/
+JsSound.prototype.addEvent = function ( element ) {
+    // can't use this on files[0] this is now the element !
+    // so store file to play in variable
+    var file = this.files[0];
+    // add event listener with function to play file
+    element.addEventListener( this.event, function(){
+        var audio = new Audio( file );
+        audio.play();   
+    });
+}
+
+/*
+@method addSound - add sound to event
+*/
+JsSound.prototype.addSound = function (file) {
+    var audio = new Audio( file );
+    audio.play();
+}
 
 /*
 @method isSupported - does the browser support the file type
@@ -120,15 +158,4 @@ JsSound.prototype.wavExists = function() {
 JsSound.prototype.aacExists = function() {
     var a = document.createElement('audio');
     return !!(a.canPlayType && a.canPlayType('audio/mp4; codecs="mp4a.40.2"').replace(/no/, ''));
-}
-
-// debug script
-JsSound.prototype.debug = function(error, msg) {
-    var usage = "JsSound(SELECTOR_TYPE, SELECTOR_NAME, FILE(ARRAY OR STRING, EVENT_TYPE(OPTIONAL))";
-    switch(error) {
-        case 'selector' :
-            console.log('Unknown type of selector ' + selector);
-            console.log(usage);
-            break;
-    }
 }
