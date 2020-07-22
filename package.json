@@ -1,0 +1,30 @@
+{
+  "name": "jssound",
+  "version": "1.0.0",
+  "description": "Add audio to html elements",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidnorminton/JsSound.git"
+  },
+  "keywords": [
+    "javascript",
+    "audio"
+  ],
+  "author": "David Norminton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidnorminton/JsSound/issues"
+  },
+  "homepage": "https://github.com/davidnorminton/JsSound#readme",
+  "devDependencies": {
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
