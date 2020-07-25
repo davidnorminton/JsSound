@@ -3,7 +3,7 @@
  * @author David Norminton
  * @link http://davenorm.me
  */
-class JsSound {
+export class JsSound {
 
 
     selectors: string[];

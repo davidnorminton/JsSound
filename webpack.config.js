@@ -17,5 +17,10 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-  },
+    libraryTarget: 'umd'
+
+  },  
+  optimization: {
+    minimize: false
+  }
 };
